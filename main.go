@@ -18,28 +18,33 @@ var ErrIgnoreFileExists = errors.New(".gitignore already exists, not doing anyth
 
 func main() {
 
-	args := os.Args[1:]
-	if len(args) == 1 && args[0] == "list" {
+	if len(os.Args) < 2 {
+		fmt.Println("Expected either list of valid gitignore.io targets or 'list'.")
+		os.Exit(1)
+	}
+
+	if os.Args[1] == "list" {
 		// Return the list of valid targets
 		fmt.Println("Valid gitignore targets...")
 		data, err := GetList()
 		if err != nil {
-			fmt.Printf("Error occurred %s\n", err)
+			fmt.Printf("Error occurred: %s\n", err)
 			os.Exit(1)
 		}
 		fmt.Println(string(data))
 	} else {
+		// Only other usage is for valid gitignore targets
 		ignoreList := os.Args[1:]
 		fmt.Printf("Writing gitignore for %v...\n", ignoreList)
 
 		data, err := GetIgnore(ignoreList)
 		if err != nil {
-			fmt.Printf("Error occurred %s\n", err)
+			fmt.Printf("Error occurred: %s\n", err)
 			os.Exit(1)
 		}
 
 		// By default doesn't ignore all of .vscode/
-		// Personal preference
+		// personal preference
 		vscode := []byte("\n.vscode/\n")
 		data = append(data, vscode...)
 

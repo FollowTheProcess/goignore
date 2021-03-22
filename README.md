@@ -5,7 +5,7 @@
 
 An extremely simple go CLI to hit the [gitignore API] with whatever you pass as command line arguments. The list of things you can pass here are documented on [gitignore.io].
 
-You'll get back a .gitignore file saved to $CWD/.gitignore with the contents generated from the API
+You'll get back a .gitignore file saved to `$CWD/.gitignore` with the contents generated from the API.
 
 ## Installation
 
