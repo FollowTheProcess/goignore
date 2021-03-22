@@ -16,24 +16,35 @@ var ErrIgnoreFileExists = errors.New(".gitignore already exists, not doing anyth
 
 func main() {
 
-	ignoreList := os.Args[1:]
-
-	data, err := GetIgnore(ignoreList)
-	if err != nil {
-		fmt.Printf("Error occured %s\n", err)
-		os.Exit(1)
-	}
-
-	// By default doesn't ignore all of .vscode/
-	// Personal preference
-	vscode := []byte("\n.vscode/\n")
-	data = append(data, vscode...)
-
-	err = WriteToIgnoreFile(data)
-	if err != nil {
-		fmt.Println(err)
+	args := os.Args[1:]
+	if len(args) == 1 && args[0] == "list" {
+		// Return the list of valid targets
+		data, err := GetList()
+		if err != nil {
+			fmt.Printf("Error occured %s\n", err)
+			os.Exit(1)
+		}
+		fmt.Println(string(data))
 	} else {
-		fmt.Println("Done!")
+		ignoreList := os.Args[1:]
+
+		data, err := GetIgnore(ignoreList)
+		if err != nil {
+			fmt.Printf("Error occured %s\n", err)
+			os.Exit(1)
+		}
+
+		// By default doesn't ignore all of .vscode/
+		// Personal preference
+		vscode := []byte("\n.vscode/\n")
+		data = append(data, vscode...)
+
+		err = WriteToIgnoreFile(data)
+		if err != nil {
+			fmt.Println(err)
+		} else {
+			fmt.Println("Done!")
+		}
 	}
 
 }
@@ -54,9 +65,28 @@ func GetIgnore(targets []string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer response.Body.Close()
 
 	return data, nil
 
+}
+
+func GetList() ([]byte, error) {
+
+	targetURL := strings.Join([]string{URL, "list"}, "/")
+
+	response, err := http.Get(targetURL)
+	if err != nil {
+		return nil, err
+	}
+
+	data, err := io.ReadAll(response.Body)
+	if err != nil {
+		return nil, err
+	}
+	defer response.Body.Close()
+
+	return data, nil
 }
 
 // WriteToIgnoreFile takes data in and writes it to cwd/.gitignore

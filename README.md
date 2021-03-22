@@ -1,6 +1,6 @@
 # goignore
 
-An extremely simple go CLI to hit the [gitignore API] with whatever you pass as command line arguments. The list of things you can pass here are documented on [gitignore.io]
+An extremely simple go CLI to hit the [gitignore API] with whatever you pass as command line arguments. The list of things you can pass here are documented on [gitignore.io].
 
 You'll get back a .gitignore file saved to $CWD/.gitignore with the contents generated from the API
 
@@ -81,6 +81,34 @@ Temporary Items
 *.code-workspace
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,vscode,go
+```
+
+## List Options
+
+If you're not sure what you can type in, run:
+
+```shell
+goignore list
+```
+
+And you'll see something like...
+
+```shell
+1c,1c-bitrix,a-frame,actionscript,ada
+adobe,advancedinstaller,adventuregamestudio,agda,al
+alteraquartusii,altium,amplify,android,androidstudio
+angular,anjuta,ansible,apachecordova,apachehadoop
+appbuilder,appceleratortitanium,appcode,appcode+all,appcode+iml
+
+# etc.
+```
+
+If you have a particular thing in mind:
+
+```shell
+goignore list | grep vscode
+
+vscode,vue,vuejs,vvvv,waf
 ```
 
 [gitignore API]: https://www.toptal.com/developers/gitignore
