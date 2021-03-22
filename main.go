@@ -10,8 +10,10 @@ import (
 	"strings"
 )
 
+// URL is the base url for the gitignore API
 const URL string = "https://www.toptal.com/developers/gitignore/api"
 
+// ErrIgnoreFileExists when there is already a gitignore file
 var ErrIgnoreFileExists = errors.New(".gitignore already exists, not doing anything")
 
 func main() {
@@ -22,7 +24,7 @@ func main() {
 		fmt.Println("Valid gitignore targets...")
 		data, err := GetList()
 		if err != nil {
-			fmt.Printf("Error occured %s\n", err)
+			fmt.Printf("Error occurred %s\n", err)
 			os.Exit(1)
 		}
 		fmt.Println(string(data))
@@ -32,7 +34,7 @@ func main() {
 
 		data, err := GetIgnore(ignoreList)
 		if err != nil {
-			fmt.Printf("Error occured %s\n", err)
+			fmt.Printf("Error occurred %s\n", err)
 			os.Exit(1)
 		}
 
@@ -73,6 +75,7 @@ func GetIgnore(targets []string) ([]byte, error) {
 
 }
 
+// GetList returns the gitignore API response for 'list'
 func GetList() ([]byte, error) {
 
 	targetURL := strings.Join([]string{URL, "list"}, "/")
