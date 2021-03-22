@@ -19,6 +19,7 @@ func main() {
 	args := os.Args[1:]
 	if len(args) == 1 && args[0] == "list" {
 		// Return the list of valid targets
+		fmt.Println("Valid gitignore targets...")
 		data, err := GetList()
 		if err != nil {
 			fmt.Printf("Error occured %s\n", err)
@@ -27,6 +28,7 @@ func main() {
 		fmt.Println(string(data))
 	} else {
 		ignoreList := os.Args[1:]
+		fmt.Printf("Writing gitignore for %v...\n", ignoreList)
 
 		data, err := GetIgnore(ignoreList)
 		if err != nil {
