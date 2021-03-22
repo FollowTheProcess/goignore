@@ -26,7 +26,7 @@ func main() {
 	if os.Args[1] == "list" {
 		// Return the list of valid targets
 		fmt.Println("Valid gitignore targets...")
-		data, err := GetList()
+		data, err := GetList(URL)
 		if err != nil {
 			fmt.Printf("Error occurred: %s\n", err)
 			os.Exit(1)
@@ -37,7 +37,7 @@ func main() {
 		ignoreList := os.Args[1:]
 		fmt.Printf("Writing gitignore for %v...\n", ignoreList)
 
-		data, err := GetIgnore(ignoreList)
+		data, err := GetIgnore(ignoreList, URL)
 		if err != nil {
 			fmt.Printf("Error occurred: %s\n", err)
 			os.Exit(1)
@@ -48,7 +48,7 @@ func main() {
 		vscode := []byte("\n.vscode/\n")
 		data = append(data, vscode...)
 
-		err = WriteToIgnoreFile(data)
+		err = WriteToIgnoreFile(data, ".gitignore")
 		if err != nil {
 			fmt.Println(err)
 		} else {
@@ -59,11 +59,11 @@ func main() {
 }
 
 // GetIgnore hits the gitignore.io API with targets and returns the response
-func GetIgnore(targets []string) ([]byte, error) {
+func GetIgnore(targets []string, url string) ([]byte, error) {
 
 	constructedString := strings.Join(targets, ",")
 
-	targetURL := strings.Join([]string{URL, constructedString}, "/")
+	targetURL := strings.Join([]string{url, constructedString}, "/")
 
 	response, err := http.Get(targetURL)
 	if err != nil {
@@ -81,9 +81,9 @@ func GetIgnore(targets []string) ([]byte, error) {
 }
 
 // GetList returns the gitignore API response for 'list'
-func GetList() ([]byte, error) {
+func GetList(url string) ([]byte, error) {
 
-	targetURL := strings.Join([]string{URL, "list"}, "/")
+	targetURL := strings.Join([]string{url, "list"}, "/")
 
 	response, err := http.Get(targetURL)
 	if err != nil {
@@ -100,14 +100,14 @@ func GetList() ([]byte, error) {
 }
 
 // WriteToIgnoreFile takes data in and writes it to cwd/.gitignore
-func WriteToIgnoreFile(data []byte) error {
+func WriteToIgnoreFile(data []byte, filename string) error {
 
 	cwd, err := os.Getwd()
 	if err != nil {
 		panic(err)
 	}
 
-	ignoreFilePath := filepath.Join(cwd, ".gitignore")
+	ignoreFilePath := filepath.Join(cwd, filename)
 
 	if _, err := os.Stat(ignoreFilePath); os.IsNotExist(err) {
 		// No .gitignore, we're good to go
