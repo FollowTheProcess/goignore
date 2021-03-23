@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -91,7 +90,7 @@ func TestWriteToIgnoreFile(t *testing.T) {
 		}
 		defer file.Close()
 
-		got, err := ioutil.ReadFile(nonExistIgnorePath)
+		got, err := os.ReadFile(nonExistIgnorePath)
 		if err != nil {
 			t.Fatalf("did not expect an error but got one: %s", err)
 		}
