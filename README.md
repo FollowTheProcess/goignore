@@ -2,6 +2,7 @@
 
 [![License](https://img.shields.io/github/license/FollowTheProcess/goignore)](https://github.com/FollowTheProcess/goignore)
 [![Go Report Card](https://goreportcard.com/badge/github.com/FollowTheProcess/goignore)](https://goreportcard.com/report/github.com/FollowTheProcess/goignore)
+[![CI](https://github.com/FollowTheProcess/goignore/workflows/CI/badge.svg)](https://github.com/FollowTheProcess/goignore/actions?query=workflow%3ACI)
 
 An extremely simple go CLI to hit the [gitignore API] with whatever you pass as command line arguments. The list of things you can pass here are documented on [gitignore.io].
 
