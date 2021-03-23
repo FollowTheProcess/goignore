@@ -14,13 +14,15 @@ You'll get back a .gitignore file saved to `$CWD/.gitignore` with the contents g
 go get -u github.com/FollowTheProcess/goignore
 ```
 
-## Demo
+## Usage
+
+Inside the folder you want the `.gitignore` to live in, run:
 
 ```shell
 goignore macos vscode go
 ```
 
-Will get a `.gitignore` file that looks like...
+This will get you a `.gitignore` file that looks like...
 
 ```plaintext
 # Created by https://www.toptal.com/developers/gitignore/api/macos,vscode,go
