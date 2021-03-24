@@ -50,7 +50,8 @@ func main() {
 
 		err = WriteToIgnoreFile(data, ".gitignore")
 		if err != nil {
-			fmt.Println(err)
+			fmt.Printf("Error occurredL %s\n", err)
+			os.Exit(1)
 		} else {
 			fmt.Println("Done!")
 		}
