@@ -15,6 +15,8 @@ You'll get back a .gitignore file saved to `$CWD/.gitignore` with the contents g
 go get -u github.com/FollowTheProcess/goignore
 ```
 
+Or download the correct binary for your OS and ARCH from the GitHub Releases :grin:
+
 ## Usage
 
 Inside the folder you want the `.gitignore` to live in, run:
