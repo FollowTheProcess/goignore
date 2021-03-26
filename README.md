@@ -94,10 +94,10 @@ Temporary Items
 
 ## List Options
 
-If you're not sure what you can type in, run:
+If you're not sure what you can type in check on [gitignore.io] or run:
 
 ```shell
-goignore list
+goignore --list
 ```
 
 And you'll see something like...
@@ -118,6 +118,14 @@ If you have a particular thing in mind:
 goignore list | grep vscode
 
 vscode,vue,vuejs,vvvv,waf
+```
+
+## Help
+
+When in doubt, run:
+
+```shell
+goignore --help
 ```
 
 [gitignore API]: https://www.toptal.com/developers/gitignore
