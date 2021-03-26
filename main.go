@@ -13,7 +13,7 @@ import (
 
 // URL is the base url for the gitignore API
 const URL string = "https://www.toptal.com/developers/gitignore/api"
-const versionMessage string = "goignore version: 0.1.0"
+const versionMessage string = "goignore version: 0.2.0"
 
 const invalidArgsMessage string = `Error: Expected list of gitignore.io targets or a CLI option.
 run '$ goignore --help' for help.`
