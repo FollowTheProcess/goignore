@@ -115,7 +115,7 @@ appbuilder,appceleratortitanium,appcode,appcode+all,appcode+iml
 If you have a particular thing in mind:
 
 ```shell
-goignore list | grep vscode
+goignore --list | grep vscode
 
 vscode,vue,vuejs,vvvv,waf
 ```
