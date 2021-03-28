@@ -46,7 +46,8 @@ func main() {
 
 	flag.Parse()
 
-	if *helpFlag {
+	if *helpFlag || len(os.Args) < 2 {
+		// Print help for no args as well as --help
 		fmt.Println(helpMessage)
 		os.Exit(0)
 	}
@@ -64,12 +65,6 @@ func main() {
 			os.Exit(1)
 		}
 		fmt.Println("\n", string(data))
-		os.Exit(0)
-	}
-
-	if len(os.Args) < 2 {
-		// No args shows help
-		fmt.Println(helpMessage)
 		os.Exit(0)
 	}
 
