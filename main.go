@@ -11,11 +11,12 @@ import (
 	"strings"
 )
 
-// URL is the base url for the gitignore API
-const URL string = "https://www.toptal.com/developers/gitignore/api"
-const versionMessage string = "goignore version: 0.2.1"
+const (
+	// ignoreURL is the base url for the gitignore API
+	ignoreURL      string = "https://www.toptal.com/developers/gitignore/api"
+	versionMessage string = "goignore version: 0.2.1\n"
 
-const helpMessage string = `
+	helpMessage string = `
 Usage: goignore [OPTIONS] [ARGS]...
 
 Handy CLI to generate great gitignore files.
@@ -34,60 +35,56 @@ $ goignore macos vscode go
 
 $ goignore --list
 `
+)
 
-// ErrIgnoreFileExists when there is already a gitignore file
-var ErrIgnoreFileExists = errors.New("'.gitignore' already exists. Not doing anything")
+var (
+	errIgnoreFileExists = errors.New("'.gitignore' already exists. Not doing anything")
+	helpFlag            bool
+	versionFlag         bool
+	listFlag            bool
+)
 
 func main() {
 
-	helpFlag := flag.Bool("help", false, "--help")
-	versionFlag := flag.Bool("version", false, "--version")
-	listFlag := flag.Bool("list", false, "--list")
+	flag.BoolVar(&helpFlag, "help", false, "--help")
+	flag.BoolVar(&versionFlag, "version", false, "--version")
+	flag.BoolVar(&listFlag, "list", false, "--list")
+
+	flag.Usage = func() {
+		fmt.Println(helpMessage)
+		os.Exit(1)
+	}
 
 	flag.Parse()
 
-	if *helpFlag || len(os.Args) < 2 {
-		// Print help for no args as well as --help
-		fmt.Println(helpMessage)
-		os.Exit(0)
-	}
+	run()
 
-	if *versionFlag {
-		fmt.Println(versionMessage)
-		os.Exit(0)
-	}
+}
 
-	if *listFlag {
-		// Return the list of valid targets
-		data, err := GetList(URL)
-		if err != nil {
-			fmt.Printf("Error: %s\n", err)
-			os.Exit(1)
-		}
-		fmt.Println("\n", string(data))
-		os.Exit(0)
-	}
+func run() {
 
-	// Only other usage is for valid gitignore targets
-	ignoreList := os.Args[1:]
-
-	data, err := GetIgnore(ignoreList, URL)
-	if err != nil {
-		fmt.Printf("Error: %s\n", err)
+	if flag.NArg() < 2 && !(helpFlag || listFlag || versionFlag) {
+		printUsage(os.Stdout)
 		os.Exit(1)
 	}
 
-	// By default doesn't ignore all of .vscode/
-	// personal preference
-	vscode := []byte("\n.vscode/\n")
-	data = append(data, vscode...)
+	switch {
+	case helpFlag:
+		printUsage(os.Stdout)
+		os.Exit(0)
 
-	err = WriteToIgnoreFile(data, ".gitignore")
-	if err != nil {
-		fmt.Printf("Error: %s.\n", err)
-		os.Exit(1)
-	} else {
-		fmt.Println("Done!")
+	case versionFlag:
+		printVersion(os.Stdout)
+		os.Exit(0)
+
+	case listFlag:
+		printList(os.Stdout, ignoreURL)
+		os.Exit(0)
+
+	default:
+		ignoreList := os.Args[1:]
+		makeIgnoreFile(ignoreList, ignoreURL)
+		os.Exit(0)
 	}
 }
 
@@ -160,8 +157,46 @@ func WriteToIgnoreFile(data []byte, filename string) error {
 			return err
 		}
 	} else {
-		return ErrIgnoreFileExists
+		return errIgnoreFileExists
 	}
 
 	return nil
+}
+
+func printUsage(where io.Writer) {
+	fmt.Fprintln(where, helpMessage)
+}
+
+func printVersion(where io.Writer) {
+	fmt.Fprintln(where, versionMessage)
+}
+
+func printList(where io.Writer, url string) {
+	data, err := GetList(url)
+	if err != nil {
+		fmt.Printf("Error: %s\n", err)
+		os.Exit(1)
+	}
+	fmt.Fprintln(where, string(data))
+}
+
+func makeIgnoreFile(targets []string, url string) {
+	data, err := GetIgnore(targets, url)
+	if err != nil {
+		fmt.Printf("Error: %s\n", err)
+		os.Exit(1)
+	}
+
+	// By default doesn't ignore all of .vscode/
+	// personal preference
+	vscode := []byte("\n.vscode/\n")
+	data = append(data, vscode...)
+
+	err = WriteToIgnoreFile(data, ".gitignore")
+	if err != nil {
+		fmt.Printf("Error: %s.\n", err)
+		os.Exit(1)
+	} else {
+		fmt.Println("Done!")
+	}
 }
