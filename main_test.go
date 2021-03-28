@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
@@ -34,24 +35,38 @@ func TestGetIgnore(t *testing.T) {
 
 func TestGetList(t *testing.T) {
 
-	want := []byte("macos,vscode,python,go,bash")
+	listData := []byte("macos,vscode,python,go,bash")
 
 	fakeServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
-		fmt.Fprintf(w, "%s", string(want))
+		fmt.Fprintf(w, "%s", string(listData))
 	}))
 	defer fakeServer.Close()
 
 	testURL := fakeServer.URL
 
-	got, err := GetList(testURL)
-	if err != nil {
-		t.Fatalf("did not expect an error but got one: %s\n", err)
-	}
+	t.Run("test fetches correct data", func(t *testing.T) {
 
-	if !reflect.DeepEqual(got, want) {
-		t.Errorf("got %q expected %q", got, want)
-	}
+		got, err := GetList(testURL)
+		if err != nil {
+			t.Fatalf("did not expect an error but got one: %s\n", err)
+		}
+
+		if !reflect.DeepEqual(got, listData) {
+			t.Errorf("got %q expected %q", got, listData)
+		}
+	})
+
+	t.Run("test prints correctly", func(t *testing.T) {
+
+		want := fmt.Sprintf("%s\n", listData)
+
+		got := bytes.Buffer{}
+
+		printList(&got, testURL)
+
+		assertString(t, got, want)
+	})
 
 }
 
@@ -63,13 +78,13 @@ func TestWriteToIgnoreFile(t *testing.T) {
 
 	t.Run("should return error if file exists", func(t *testing.T) {
 
-		want := ErrIgnoreFileExists
+		want := errIgnoreFileExists
 
 		err := WriteToIgnoreFile(fakeWriteData, fakeIgnorePath)
 
 		if err == nil {
 			t.Errorf("should have raised an error but didnt")
-		} else if err != ErrIgnoreFileExists {
+		} else if err != errIgnoreFileExists {
 			t.Errorf("expected %q, got %q", want, err)
 		}
 	})
@@ -106,4 +121,33 @@ func TestWriteToIgnoreFile(t *testing.T) {
 		}
 
 	})
+}
+
+func TestPrintVersion(t *testing.T) {
+
+	want := fmt.Sprintf("%s\n", versionMessage)
+
+	got := bytes.Buffer{}
+	printVersion(&got)
+
+	assertString(t, got, want)
+
+}
+
+func TestPrintUsage(t *testing.T) {
+
+	want := fmt.Sprintf("%s\n", helpMessage)
+
+	got := bytes.Buffer{}
+	printUsage(&got)
+
+	assertString(t, got, want)
+}
+
+func assertString(t testing.TB, got bytes.Buffer, want string) {
+	t.Helper()
+
+	if got.String() != want {
+		t.Errorf("got %s, wanted %s", got.String(), want)
+	}
 }
