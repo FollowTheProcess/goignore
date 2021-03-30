@@ -97,14 +97,10 @@ func TestWriteToIgnoreFile(t *testing.T) {
 		if err != nil {
 			t.Fatalf("did not expect an error but got one: %s", err)
 		}
+		// Remove the file again
+		defer cleanUpFile(t, nonExistIgnorePath)
 
 		// Now read from the newly created file
-		file, err := os.Open(nonExistIgnorePath)
-		if err != nil {
-			t.Fatalf("did not expect an error but got one: %s", err)
-		}
-		defer file.Close()
-
 		got, err := os.ReadFile(nonExistIgnorePath)
 		if err != nil {
 			t.Fatalf("did not expect an error but got one: %s", err)
@@ -112,12 +108,6 @@ func TestWriteToIgnoreFile(t *testing.T) {
 
 		if !reflect.DeepEqual(got, want) {
 			t.Errorf("got %q, expected %q", got, want)
-		}
-
-		// Remove the file again
-		err = os.Remove(nonExistIgnorePath)
-		if err != nil {
-			t.Fatalf("did not expect an error but got one: %s", err)
 		}
 
 	})
@@ -149,5 +139,13 @@ func assertString(t testing.TB, got bytes.Buffer, want string) {
 
 	if got.String() != want {
 		t.Errorf("got %s, wanted %s", got.String(), want)
+	}
+}
+
+func cleanUpFile(t testing.TB, filepath string) {
+	t.Helper()
+	err := os.Remove(filepath)
+	if err != nil {
+		t.Fatalf("did not expect an error but got one: %s", err)
 	}
 }
