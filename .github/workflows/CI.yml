@@ -2,10 +2,7 @@ name: CI
 on: [push, pull_request]
 jobs:
   test:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest]
+    runs-on: ubuntu-latest
 
     steps:
       - name: Set up Go 1.16
