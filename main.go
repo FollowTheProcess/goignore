@@ -15,6 +15,7 @@ const (
 	// ignoreURL is the base url for the gitignore API
 	ignoreURL      string = "https://www.toptal.com/developers/gitignore/api"
 	versionMessage string = "goignore version: 0.2.1\n"
+	listMessage    string = "To get a list of valid targets, run goignore --list"
 
 	helpMessage string = `
 Usage: goignore [OPTIONS] [ARGS]...
@@ -80,6 +81,10 @@ func run() {
 	case listFlag:
 		printList(os.Stdout, ignoreURL)
 		os.Exit(0)
+
+	case os.Args[1] == "list":
+		fmt.Println(listMessage)
+		os.Exit(1)
 
 	default:
 		ignoreList := os.Args[1:]
