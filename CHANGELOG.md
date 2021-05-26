@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.2
+
+- Passing 'list' as an argument now recommends using '--list'
+- Various project dev tweaks
+
 ## 0.2.1
 
 - No args now shows help
