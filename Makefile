@@ -1,4 +1,4 @@
-.PHONY: help build test lint cover bench clean checks
+.PHONY: help build test lint cover bench clean check
 .DEFAULT_GOAL := help
 .SILENT:
 
@@ -11,29 +11,24 @@ help:
 	@echo " - cover   :  Generate test coverage."
 	@echo " - bench   :  Run all benchmarks."
 	@echo " - clean   :  Clear build artifacts and project clutter."
-	@echo " - checks  :  Run all checking targets in one go."
+	@echo " - check   :  Run all checking targets in one go."
 
 build:
 	@echo "\nBuilding: goignore\n"
-	go build ./...
+	go mod tidy
+	go build .
 
 test:
 	@echo "\nRunning Unit Tests\n"
-	go test -race ./...
+	go test -race -cover ./...
 
 lint:
-	@echo "\nRunning: go fmt\n"
-	go fmt ./...
-	@echo "\nRunning: go vet\n"
-	go vet ./...
-	@echo "\nRunning: golint\n"
-	golint ./...
-	@echo "\nRunning: staticcheck\n"
-	staticcheck ./...
+	@echo "\nRunning: golangci-lint\n"
+	golangci-lint run
 
 cover:
 	@echo "\nTest Coverage\n"
-	go test -race -coverprofile=coverage.out -coverpkg=./... ./...
+	go test -race -cover -coverprofile=coverage.out ./...
 	go tool cover -html=coverage.out -o coverage.html
 
 bench:
@@ -45,4 +40,4 @@ clean:
 	go clean ./...
 	rm -f coverage.out coverage.html
 
-checks: test bench lint cover
+check: test bench lint cover
