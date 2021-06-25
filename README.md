@@ -12,7 +12,7 @@ You'll get back a .gitignore file saved to `$CWD/.gitignore` with the contents g
 ## Installation
 
 ```shell
-go get -u github.com/FollowTheProcess/goignore@latest
+go install github.com/FollowTheProcess/goignore@latest
 ```
 
 Or download the correct binary for your OS and ARCH from the GitHub Releases :grin:
