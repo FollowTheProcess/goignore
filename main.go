@@ -104,12 +104,12 @@ func GetIgnore(targets []string, url string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer response.Body.Close()
 
 	data, err := io.ReadAll(response.Body)
 	if err != nil {
 		return nil, err
 	}
-	defer response.Body.Close()
 
 	return data, nil
 
@@ -124,12 +124,12 @@ func GetList(url string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer response.Body.Close()
 
 	data, err := io.ReadAll(response.Body)
 	if err != nil {
 		return nil, err
 	}
-	defer response.Body.Close()
 
 	return data, nil
 }
@@ -139,7 +139,7 @@ func WriteToIgnoreFile(data []byte, filename string) error {
 
 	cwd, err := os.Getwd()
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	ignoreFilePath := filepath.Join(cwd, filename)
@@ -148,17 +148,20 @@ func WriteToIgnoreFile(data []byte, filename string) error {
 		// No .gitignore, we're good to go
 		_, err := os.Create(ignoreFilePath)
 		if err != nil {
-			panic(err)
+			return err
 		}
 
 		file, err := os.OpenFile(ignoreFilePath, os.O_WRONLY, os.ModeAppend)
 		if err != nil {
-			panic(err)
+			return err
 		}
 		defer file.Close()
 
 		_, err = file.Write(data)
 		if err != nil {
+			return err
+		}
+		if err := file.Sync(); err != nil {
 			return err
 		}
 	} else {
