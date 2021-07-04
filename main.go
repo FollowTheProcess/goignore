@@ -139,7 +139,7 @@ func WriteToIgnoreFile(data []byte, filename string) error {
 
 	cwd, err := os.Getwd()
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	ignoreFilePath := filepath.Join(cwd, filename)
@@ -161,7 +161,9 @@ func WriteToIgnoreFile(data []byte, filename string) error {
 		if err != nil {
 			return err
 		}
-		file.Sync()
+		if err := file.Sync(); err != nil {
+			return err
+		}
 	} else {
 		return errIgnoreFileExists
 	}
