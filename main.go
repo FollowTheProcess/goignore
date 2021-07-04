@@ -14,7 +14,7 @@ import (
 const (
 	// ignoreURL is the base url for the gitignore API
 	ignoreURL      string = "https://www.toptal.com/developers/gitignore/api"
-	versionMessage string = "goignore version: 0.2.2\n"
+	versionMessage string = "goignore version: 0.2.3\n"
 	listMessage    string = "To get a list of valid targets, run goignore --list"
 
 	helpMessage string = `
