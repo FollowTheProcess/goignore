@@ -189,6 +189,7 @@ func printList(where io.Writer, url string) {
 }
 
 func makeIgnoreFile(targets []string, url string) {
+	fmt.Printf("Creating a gitignore for: %v\n", strings.Join(targets, ", "))
 	data, err := GetIgnore(targets, url)
 	if err != nil {
 		fmt.Printf("Error: %s\n", err)
