@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.4
+
+- Now logs the targets requested to the user before making the ignore file
+
+## 0.2.3
+
+- Minor bug fixes
+
 ## 0.2.2
 
 - Passing 'list' as an argument now recommends using '--list'
