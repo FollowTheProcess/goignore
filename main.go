@@ -144,10 +144,11 @@ func WriteToIgnoreFile(data []byte, filename string) error {
 
 	if _, err := os.Stat(ignoreFilePath); errors.Is(err, fs.ErrNotExist) {
 		// No .gitignore, we're good to go
-		_, err := os.Create(ignoreFilePath)
+		out, err := os.Create(ignoreFilePath)
 		if err != nil {
 			return fmt.Errorf("could not create ignore file: %w", err)
 		}
+		defer out.Close()
 
 		file, err := os.OpenFile(ignoreFilePath, os.O_WRONLY, os.ModeAppend)
 		if err != nil {
