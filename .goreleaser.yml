@@ -10,7 +10,7 @@ builds:
     main: "."
     binary: goignore
     ldflags:
-      - -s -w -X main.version={{.Version}}
+      - -s -w -X main.Version={{.Version}}
     env:
       - CGO_ENABLED=0
     goos:
