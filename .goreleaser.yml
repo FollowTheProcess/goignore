@@ -5,16 +5,28 @@ before:
     - go mod tidy
 
 builds:
-  - env:
+  - id: "goignore"
+    dir: "."
+    main: "."
+    binary: goignore
+    ldflags:
+      - -s -w -X main.Version={{.Version}}
+    env:
       - CGO_ENABLED=0
     goos:
       - linux
       - darwin
+      - windows
+    goarch:
+      - 386
+      - amd64
+      - arm64
 
 archives:
   - replacements:
       darwin: Darwin
       linux: Linux
+      windows: Windows
       386: i386
       amd64: x86_64
 

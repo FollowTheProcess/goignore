@@ -5,24 +5,29 @@ import (
 	"flag"
 	"fmt"
 	"io"
+	"io/fs"
 	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/FollowTheProcess/msg"
 )
+
+// Version is set by ldflags at compile time
+var Version = "dev"
 
 const (
 	// ignoreURL is the base url for the gitignore API
-	ignoreURL      string = "https://www.toptal.com/developers/gitignore/api"
-	versionMessage string = "goignore version: 0.2.4"
-	listMessage    string = "To get a list of valid targets, run goignore --list"
+	ignoreURL   string = "https://www.toptal.com/developers/gitignore/api"
+	listMessage string = "To get a list of valid targets, run goignore --list"
 
 	helpMessage string = `
-Usage: goignore [OPTIONS] [ARGS]...
+Usage: goignore [FLAGS] [TARGETS]...
 
 Handy CLI to generate great gitignore files.
 
-Options:
+Flags:
 	--version: Display goignore's version.
 	--help: Show this help message and exit.
 	--list: Show the valid gitignore.io targets.
@@ -46,7 +51,6 @@ var (
 )
 
 func main() {
-
 	flag.BoolVar(&helpFlag, "help", false, "--help")
 	flag.BoolVar(&versionFlag, "version", false, "--version")
 	flag.BoolVar(&listFlag, "list", false, "--list")
@@ -59,11 +63,9 @@ func main() {
 	flag.Parse()
 
 	run()
-
 }
 
 func run() {
-
 	if flag.NArg() < 2 && !(helpFlag || listFlag || versionFlag) {
 		printUsage(os.Stdout)
 		os.Exit(1)
@@ -95,40 +97,37 @@ func run() {
 
 // GetIgnore hits the gitignore.io API with targets and returns the response
 func GetIgnore(targets []string, url string) ([]byte, error) {
-
 	constructedString := strings.Join(targets, ",")
 
 	targetURL := strings.Join([]string{url, constructedString}, "/")
 
 	response, err := http.Get(targetURL)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("HTTP error: %w", err)
 	}
 	defer response.Body.Close()
 
 	data, err := io.ReadAll(response.Body)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error reading http response: %w", err)
 	}
 
 	return data, nil
-
 }
 
 // GetList returns the gitignore API response for 'list'
 func GetList(url string) ([]byte, error) {
-
 	targetURL := strings.Join([]string{url, "list"}, "/")
 
 	response, err := http.Get(targetURL)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("HTTP error: %w", err)
 	}
 	defer response.Body.Close()
 
 	data, err := io.ReadAll(response.Body)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error reading http response: %w", err)
 	}
 
 	return data, nil
@@ -136,33 +135,33 @@ func GetList(url string) ([]byte, error) {
 
 // WriteToIgnoreFile takes data in and writes it to cwd/.gitignore
 func WriteToIgnoreFile(data []byte, filename string) error {
-
 	cwd, err := os.Getwd()
 	if err != nil {
-		return err
+		return fmt.Errorf("could not get current working dir: %w", err)
 	}
 
 	ignoreFilePath := filepath.Join(cwd, filename)
 
-	if _, err := os.Stat(ignoreFilePath); os.IsNotExist(err) {
+	if _, err := os.Stat(ignoreFilePath); errors.Is(err, fs.ErrNotExist) {
 		// No .gitignore, we're good to go
-		_, err := os.Create(ignoreFilePath)
+		out, err := os.Create(ignoreFilePath)
 		if err != nil {
-			return err
+			return fmt.Errorf("could not create ignore file: %w", err)
 		}
+		defer out.Close()
 
 		file, err := os.OpenFile(ignoreFilePath, os.O_WRONLY, os.ModeAppend)
 		if err != nil {
-			return err
+			return fmt.Errorf("could not open ignore file: %w", err)
 		}
 		defer file.Close()
 
 		_, err = file.Write(data)
 		if err != nil {
-			return err
+			return fmt.Errorf("could not write to ignore file: %w", err)
 		}
 		if err := file.Sync(); err != nil {
-			return err
+			return fmt.Errorf("could not save ignore file: %w", err)
 		}
 	} else {
 		return errIgnoreFileExists
@@ -176,23 +175,24 @@ func printUsage(where io.Writer) {
 }
 
 func printVersion(where io.Writer) {
-	fmt.Fprintln(where, versionMessage)
+	fmt.Fprintf(where, "goignore version: %s\n", Version)
 }
 
 func printList(where io.Writer, url string) {
 	data, err := GetList(url)
 	if err != nil {
-		fmt.Printf("Error: %s\n", err)
+		msg.Failf("Error: %s", err)
 		os.Exit(1)
 	}
 	fmt.Fprintln(where, string(data))
 }
 
 func makeIgnoreFile(targets []string, url string) {
-	fmt.Printf("Creating a gitignore for: %v\n", strings.Join(targets, ", "))
+	msg.Infof("Creating a gitignore for: %v", strings.Join(targets, ", "))
+
 	data, err := GetIgnore(targets, url)
 	if err != nil {
-		fmt.Printf("Error: %s\n", err)
+		msg.Failf("Error: %s", err)
 		os.Exit(1)
 	}
 
@@ -203,9 +203,9 @@ func makeIgnoreFile(targets []string, url string) {
 
 	err = WriteToIgnoreFile(data, ".gitignore")
 	if err != nil {
-		fmt.Printf("Error: %s.\n", err)
+		msg.Failf("Error: %s", err)
 		os.Exit(1)
 	} else {
-		fmt.Println("Done!")
+		msg.Good("Done!")
 	}
 }
