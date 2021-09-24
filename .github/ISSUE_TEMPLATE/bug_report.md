@@ -26,7 +26,7 @@ If applicable, add screenshots to help explain your problem.
 ### Environment
 
 * OS: [e.g. Linux / Windows / macOS]
-* {{cookiecutter.project_slug}} Version [e.g. 0.3.0]
+* gotoil Version [e.g. 0.3.0]
 
 * Go environment, get it with:
 

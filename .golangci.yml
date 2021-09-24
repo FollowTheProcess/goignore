@@ -1,0 +1,20 @@
+linters:
+  enable:
+    - gofumpt
+    - gocyclo
+    - wrapcheck
+    - revive
+    - misspell
+    - gocritic
+
+linters-settings:
+  gocyclo:
+    min-complexity: 15
+
+  staticcheck:
+    go: 1.17
+    checks: ["all"]
+
+  gofumpt:
+    lang-version: 1.17
+    extra-rules: true

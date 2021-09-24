@@ -6,12 +6,12 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 )
 
 func TestGetIgnore(t *testing.T) {
-
 	want := []byte("fake gitignore stuff here")
 
 	fakeServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -30,11 +30,9 @@ func TestGetIgnore(t *testing.T) {
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("got %q expected %q", got, want)
 	}
-
 }
 
 func TestGetList(t *testing.T) {
-
 	listData := []byte("macos,vscode,python,go,bash")
 
 	fakeServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -46,7 +44,6 @@ func TestGetList(t *testing.T) {
 	testURL := fakeServer.URL
 
 	t.Run("test fetches correct data", func(t *testing.T) {
-
 		got, err := GetList(testURL)
 		if err != nil {
 			t.Fatalf("did not expect an error but got one: %s\n", err)
@@ -58,7 +55,6 @@ func TestGetList(t *testing.T) {
 	})
 
 	t.Run("test prints correctly", func(t *testing.T) {
-
 		want := fmt.Sprintf("%s\n", listData)
 
 		got := bytes.Buffer{}
@@ -67,17 +63,14 @@ func TestGetList(t *testing.T) {
 
 		assertString(t, got, want)
 	})
-
 }
 
 func TestWriteToIgnoreFile(t *testing.T) {
-
-	fakeIgnorePath := "./testdata/.fakeignore"
-	nonExistIgnorePath := "./testdata/.nothereignore"
+	fakeIgnorePath := filepath.Join("testdata", ".fakeignore")
+	nonExistIgnorePath := filepath.Join("testdata", ".nothereignore")
 	fakeWriteData := []byte("this is some fake stuff")
 
 	t.Run("should return error if file exists", func(t *testing.T) {
-
 		want := errIgnoreFileExists
 
 		err := WriteToIgnoreFile(fakeWriteData, fakeIgnorePath)
@@ -90,7 +83,6 @@ func TestWriteToIgnoreFile(t *testing.T) {
 	})
 
 	t.Run("should write data to file if doesn't exist", func(t *testing.T) {
-
 		want := fakeWriteData
 
 		err := WriteToIgnoreFile(fakeWriteData, nonExistIgnorePath)
@@ -109,23 +101,19 @@ func TestWriteToIgnoreFile(t *testing.T) {
 		if !reflect.DeepEqual(got, want) {
 			t.Errorf("got %q, expected %q", got, want)
 		}
-
 	})
 }
 
 func TestPrintVersion(t *testing.T) {
-
-	want := fmt.Sprintf("%s\n", versionMessage)
+	want := fmt.Sprintf("goignore version: %s\n", Version)
 
 	got := bytes.Buffer{}
 	printVersion(&got)
 
 	assertString(t, got, want)
-
 }
 
 func TestPrintUsage(t *testing.T) {
-
 	want := fmt.Sprintf("%s\n", helpMessage)
 
 	got := bytes.Buffer{}
