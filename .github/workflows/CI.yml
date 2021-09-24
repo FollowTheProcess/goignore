@@ -55,7 +55,7 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v2
         with:
-          fetch_depth: 0 # See: https://goreleaser.com/ci/actions/
+          fetch-depth: 0 # See: https://goreleaser.com/ci/actions/
 
       - name: Set up Go 1.17
         uses: actions/setup-go@v2
