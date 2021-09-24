@@ -23,11 +23,11 @@ const (
 	listMessage string = "To get a list of valid targets, run goignore --list"
 
 	helpMessage string = `
-Usage: goignore [OPTIONS] [ARGS]...
+Usage: goignore [FLAGS] [TARGETS]...
 
 Handy CLI to generate great gitignore files.
 
-Options:
+Flags:
 	--version: Display goignore's version.
 	--help: Show this help message and exit.
 	--list: Show the valid gitignore.io targets.
