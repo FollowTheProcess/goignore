@@ -15,7 +15,7 @@ import (
 )
 
 // Version is set by ldflags at compile time
-var Version = "dev"
+var version = "dev"
 
 const (
 	// ignoreURL is the base url for the gitignore API
@@ -175,7 +175,7 @@ func printUsage(where io.Writer) {
 }
 
 func printVersion(where io.Writer) {
-	fmt.Fprintf(where, "goignore version: %s\n", Version)
+	fmt.Fprintf(where, "goignore version: %s\n", version)
 }
 
 func printList(where io.Writer, url string) {
