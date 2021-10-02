@@ -14,9 +14,6 @@ import (
 	"github.com/FollowTheProcess/msg"
 )
 
-// Version is set by ldflags at compile time
-var Version = "dev"
-
 const (
 	// ignoreURL is the base url for the gitignore API
 	ignoreURL   string = "https://www.toptal.com/developers/gitignore/api"
@@ -48,6 +45,8 @@ var (
 	helpFlag            bool
 	versionFlag         bool
 	listFlag            bool
+	version             = "dev" // Set by ldflags at compile time
+	commit              = ""    // Set by ldflags at compile time
 )
 
 func main() {
@@ -175,7 +174,7 @@ func printUsage(where io.Writer) {
 }
 
 func printVersion(where io.Writer) {
-	fmt.Fprintf(where, "goignore version: %s\n", Version)
+	fmt.Fprintf(where, "goignore version: %s\ncommit: %s\n", version, commit)
 }
 
 func printList(where io.Writer, url string) {
