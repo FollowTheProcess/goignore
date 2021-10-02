@@ -105,7 +105,7 @@ func TestWriteToIgnoreFile(t *testing.T) {
 }
 
 func TestPrintVersion(t *testing.T) {
-	want := fmt.Sprintf("goignore version: %s\n", Version)
+	want := fmt.Sprintf("goignore version: %s\ncommit: %s\n", version, commit)
 
 	got := bytes.Buffer{}
 	printVersion(&got)
