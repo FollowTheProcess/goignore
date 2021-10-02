@@ -12,7 +12,8 @@ You'll get back a .gitignore file saved to `$CWD/.gitignore` with the contents g
 ## Installation
 
 ```shell
-go install github.com/FollowTheProcess/goignore@latest
+brew tap FollowTheProcess/homebrew-tap
+brew install FollowTheProcess/homebrew-tap/goignore
 ```
 
 Or download the correct binary for your OS and ARCH from the GitHub Releases :grin:
