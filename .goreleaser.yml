@@ -36,6 +36,8 @@ brews:
     homepage: "https://github.com/FollowTheProcess/goignore"
     description: "Easy gitignore files from the command line"
     license: "MIT"
+    install: |
+      bin.install "goignore"
     test: |
       "#{bin}/goignore --version"
 

@@ -1,13 +1,13 @@
-project_name := "goignore"
-project_path := "github.com/FollowTheProcess/goignore"
-project_binaries := "./bin"
-project_entry_point := "."
-coverage_data := "coverage.out"
-coverage_html := "coverage.html"
-goreleaser_dist := "dist"
-commit_sha := `git rev-parse HEAD`
-ver_ldflag := "main.version"
-sha_ldflag := "main.commit"
+PROJECT_NAME := "goignore"
+PROJECT_PATH := "github.com/FollowTheProcess/goignore"
+PROJECT_BIN := "./bin"
+PROJECT_ENTRY_POINT := "."
+COVERAGE_DATA := "coverage.out"
+COVERAGE_HTML := "coverage.html"
+GORELEASER_DIST := "dist"
+COMMIT_SHA := `git rev-parse HEAD`
+VERSION_LDFLAG := "main.version"
+COMMIT_LDFLAG := "main.commit"
 
 # By default print the list of recipes
 _default:
@@ -19,7 +19,7 @@ tidy:
 
 # Compile the project binary
 build: tidy fmt
-    go build -ldflags="-s -w -X {{ ver_ldflag }}=dev -X {{ sha_ldflag }}={{ commit_sha }}" -o {{ project_binaries }}/{{ project_name }} {{ project_entry_point }}
+    go build -ldflags="-s -w -X {{ VERSION_LDFLAG }}=dev -X {{ COMMIT_LDFLAG }}={{ COMMIT_SHA }}" -o {{ PROJECT_BIN }}/{{ PROJECT_NAME }} {{ PROJECT_ENTRY_POINT }}
 
 # Run go fmt on all project files
 fmt:
@@ -35,14 +35,14 @@ lint: fmt
 
 # Calculate test coverage and render the html
 cover:
-    go test -race -cover -coverprofile={{ coverage_data }} ./...
-    go tool cover -html={{ coverage_data }} -o {{ coverage_html }}
-    open {{ coverage_html }}
+    go test -race -cover -coverprofile={{ COVERAGE_DATA }} ./...
+    go tool cover -html={{ COVERAGE_DATA }} -o {{ COVERAGE_HTML }}
+    open {{ COVERAGE_HTML }}
 
 # Remove build artifacts and other project clutter
 clean:
     go clean ./...
-    rm -rf {{ project_name }} {{ project_binaries }} {{ coverage_data }} {{ coverage_html }} {{ goreleaser_dist }}
+    rm -rf {{ PROJECT_NAME }} {{ PROJECT_BIN }} {{ COVERAGE_DATA }} {{ COVERAGE_HTML }} {{ GORELEASER_DIST }}
 
 # Run unit tests and linting in one go
 check: test lint
@@ -52,8 +52,8 @@ all: build test lint cover
 
 # Install the project on your machine
 install:
-    go install {{ project_entry_point }}
+    go install {{ PROJECT_ENTRY_POINT }}
 
 # Uninstall the project from your machine
 uninstall:
-    rm -rf $GOBIN/{{ project_name }}
+    rm -rf $GOBIN/{{ PROJECT_NAME }}
