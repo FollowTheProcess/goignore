@@ -1,17 +1,21 @@
 PROJECT_NAME := "goignore"
 PROJECT_PATH := "github.com/FollowTheProcess/goignore"
 PROJECT_BIN := "./bin"
-PROJECT_ENTRY_POINT := "."
+PROJECT_ENTRY_POINT := "./cmd/goignore"
 COVERAGE_DATA := "coverage.out"
 COVERAGE_HTML := "coverage.html"
 GORELEASER_DIST := "dist"
 COMMIT_SHA := `git rev-parse HEAD`
-VERSION_LDFLAG := "main.version"
-COMMIT_LDFLAG := "main.commit"
+VERSION_LDFLAG := PROJECT_PATH + "/cli.version"
+COMMIT_LDFLAG := PROJECT_PATH + "/cli.commit"
 
 # By default print the list of recipes
 _default:
     @just --list
+
+# Show justfile variables
+show:
+    @just --evaluate
 
 # Tidy up dependencies in go.mod and go.sum
 tidy:
@@ -19,15 +23,19 @@ tidy:
 
 # Compile the project binary
 build: tidy fmt
-    go build -ldflags="-s -w -X {{ VERSION_LDFLAG }}=dev -X {{ COMMIT_LDFLAG }}={{ COMMIT_SHA }}" -o {{ PROJECT_BIN }}/{{ PROJECT_NAME }} {{ PROJECT_ENTRY_POINT }}
+    go build -ldflags="-X {{ VERSION_LDFLAG }}=dev -X {{ COMMIT_LDFLAG }}={{ COMMIT_SHA }}" -o {{ PROJECT_BIN }}/{{ PROJECT_NAME }} {{ PROJECT_ENTRY_POINT }}
 
 # Run go fmt on all project files
 fmt:
-    gofumpt -extra -s -w .
+    gofumpt -extra -w .
 
 # Run all project unit tests
 test *flags: fmt
     go test -race ./... {{ flags }}
+
+# Run all project benchmarks
+bench: fmt
+    go test ./... -bench=. -benchmem
 
 # Lint the project and auto-fix errors if possible
 lint: fmt
@@ -50,9 +58,13 @@ check: test lint
 # Run all recipes (other than clean) in a sensible order
 all: build test lint cover
 
+# Print lines of code (for fun)
+sloc:
+    find . -name "*.go" | xargs wc -l | sort -nr
+
 # Install the project on your machine
-install:
-    go install {{ PROJECT_ENTRY_POINT }}
+install: uninstall build
+    cp {{ PROJECT_BIN }}/{{ PROJECT_NAME }} $GOBIN/
 
 # Uninstall the project from your machine
 uninstall:
