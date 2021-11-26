@@ -104,11 +104,16 @@ goignore --list
 And you'll see something like...
 
 ```shell
-1c,1c-bitrix,a-frame,actionscript,ada
-adobe,advancedinstaller,adventuregamestudio,agda,al
-alteraquartusii,altium,amplify,android,androidstudio
-angular,anjuta,ansible,apachecordova,apachehadoop
-appbuilder,appceleratortitanium,appcode,appcode+all,appcode+iml
+1c,
+1c-bitrix,
+a-frame,
+actionscript,
+ada
+adobe,
+advancedinstaller,
+adventuregamestudio,
+agda,
+al
 
 # etc.
 ```
@@ -116,9 +121,9 @@ appbuilder,appceleratortitanium,appcode,appcode+all,appcode+iml
 If you have a particular thing in mind:
 
 ```shell
-goignore --list | grep vscode
+goignore --list | grep visualstudiocode
 
-vscode,vue,vuejs,vvvv,waf
+visualstudiocode
 ```
 
 ## Help

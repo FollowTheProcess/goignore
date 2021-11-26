@@ -69,6 +69,7 @@ Temporary Items
 .history
 .ionide
 
-# End of https://www.toptal.com/developers/gitignore/api/macos,visualstudiocode,go
+# Support for Project snippet scope
+!.vscode/*.code-snippets
 
-.vscode/
+# End of https://www.toptal.com/developers/gitignore/api/macos,visualstudiocode,go

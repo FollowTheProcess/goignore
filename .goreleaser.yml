@@ -1,4 +1,4 @@
-project_name: goignore
+project_name: "goignore"
 
 before:
   hooks:
@@ -7,12 +7,12 @@ before:
 builds:
   - id: "goignore"
     dir: "."
-    main: "."
-    binary: goignore
+    main: "./cmd/goignore"
+    binary: "goignore"
     ldflags:
       - -s -w
-      - -X main.version={{ .Version }}
-      - -X main.commit={{ .Commit }}
+      - -X github.com/FollowTheProcess/goignore/cli.version={{.Version}}
+      - -X github.com/FollowTheProcess/goignore/cli.commit={{.Commit}}
     env:
       - CGO_ENABLED=0
     goos:
@@ -20,26 +20,26 @@ builds:
       - darwin
       - windows
     goarch:
-      - 386
+      - "386"
       - amd64
       - arm64
 
 brews:
-  - name: "goignore"
+  - goarm: "6"
     tap:
-      owner: FollowTheProcess
+      owner: "FollowTheProcess"
       name: homebrew-tap
       token: "{{.Env.HOMEBREW_TAP_TOKEN}}"
     commit_author:
       name: "Tom Fleet"
       email: "tomfleet2018@gmail.com"
     homepage: "https://github.com/FollowTheProcess/goignore"
-    description: "Easy gitignore files from the command line"
-    license: "MIT"
+    description: "Easy gitignores from the command line."
+    license: "MIT License"
     install: |
       bin.install "goignore"
     test: |
-      "#{bin}/goignore --version"
+      "#{bin}/goignore version"
 
 archives:
   - replacements:
