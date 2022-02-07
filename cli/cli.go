@@ -37,8 +37,7 @@ $ goignore --list
 Flags:
 	-h, --help      Help for venv
 	-v, --version   Show venv's version info
-	-l, --list      Show a list of all allowed targets
-`
+	-l, --list      Show a list of all allowed targets`
 )
 
 // App represents the goignore CLI program
