@@ -17,7 +17,7 @@ jobs:
           go-version: 1.17
 
       - name: Checkout Code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Download Dependencies
         run: go mod download
@@ -36,7 +36,7 @@ jobs:
           go-version: 1.17
 
       - name: Checkout Code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Run Linting
         uses: golangci/golangci-lint-action@v3
@@ -53,7 +53,7 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Go 1.17
         uses: actions/setup-go@v2
