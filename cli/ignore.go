@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 )
 
-// writeToIgnoreFile writes 'data' to cwd/.gitignore
+// writeToIgnoreFile writes 'data' to cwd/.gitignore.
 func (a *App) writeToIgnoreFile(cwd string, data []byte) error {
 	ignorePath := filepath.Join(cwd, ".gitignore")
 

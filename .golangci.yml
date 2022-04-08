@@ -1,20 +1,22 @@
 linters:
   enable:
-    - gofumpt
+    - gofmt
+    - goimports
     - gocyclo
-    - wrapcheck
     - revive
     - misspell
     - gocritic
+    - govet
+    - godot
+    - whitespace
 
 linters-settings:
   gocyclo:
     min-complexity: 15
 
   staticcheck:
-    go: 1.17
+    go: "1.18"
     checks: ["all"]
 
-  gofumpt:
-    lang-version: 1.17
-    extra-rules: true
+  govet:
+    enable-all: true

@@ -8,7 +8,7 @@ import (
 )
 
 // getIgnoreData constructs a url from 'url' and 'targets', hits that URL
-// and returns the response data and any error
+// and returns the response data and any error.
 func getIgnoreData(url string, targets []string) ([]byte, error) {
 	targetString := strings.Join(targets, ",")
 	fullURL := strings.Join([]string{url, targetString}, "/")

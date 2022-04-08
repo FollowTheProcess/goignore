@@ -18,7 +18,7 @@ var (
 )
 
 const (
-	// The base URL for gitignore.io
+	// The base URL for gitignore.io.
 	ignoreURL = "https://www.toptal.com/developers/gitignore/api"
 	helpText  = `
 Generate great gitignore files, straight from the command line! 🛠
@@ -40,7 +40,7 @@ Flags:
 	-l, --list      Show a list of all allowed targets`
 )
 
-// App represents the goignore CLI program
+// App represents the goignore CLI program.
 type App struct {
 	stdout  io.Writer
 	stderr  io.Writer
@@ -49,7 +49,7 @@ type App struct {
 }
 
 // New creates and returns a new App configured with an afero file system
-// and IO streams
+// and IO streams.
 func New(stdout, stderr io.Writer, fs afero.Fs) *App {
 	af := afero.Afero{Fs: fs}
 	printer := msg.Default()
@@ -57,12 +57,12 @@ func New(stdout, stderr io.Writer, fs afero.Fs) *App {
 	return &App{stdout: stdout, stderr: stderr, fs: af, printer: printer}
 }
 
-// Help prints the CLI help text
+// Help prints the CLI help text.
 func (a *App) Help() {
 	fmt.Fprintln(a.stdout, helpText)
 }
 
-// Version prints CLI version info
+// Version prints CLI version info.
 func (a *App) Version() {
 	ver := color.CyanString("goignore version")
 	sha := color.CyanString("commit")
@@ -71,14 +71,14 @@ func (a *App) Version() {
 	fmt.Fprintf(a.stdout, "%s: %s\n", sha, commit)
 }
 
-// List prints the list of valid gitignore targets
+// List prints the list of valid gitignore targets.
 func (a *App) List() {
 	for _, target := range targets {
 		fmt.Fprintln(a.stdout, target)
 	}
 }
 
-// Run represents the entry point to the CLI
+// Run represents the entry point to the CLI.
 func (a *App) Run(cwd string, args []string) error {
 	for _, arg := range args {
 		if !IsValidTarget(arg) {

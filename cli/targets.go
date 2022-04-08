@@ -9,7 +9,7 @@ import "sort"
 //
 // Benchmarks suggest that looping through all is about 330ns/op with 0 allocs
 // where as the binary search is around 50ns/op also with 0 allocs, so around 85% faster!
-// Targets taken from gitignore.io on 26/11/2021
+// Targets taken from gitignore.io on 26/11/2021.
 var targets = []string{
 	"1c",
 	"1c-bitrix",
@@ -545,7 +545,7 @@ var targets = []string{
 }
 
 // IsValidTarget compares 'target' against a hardcoded list of valid targets
-// to check whether or not it is valid
+// to check whether or not it is valid.
 func IsValidTarget(target string) bool {
 	i := sort.SearchStrings(targets, target)
 	return i < len(targets) && targets[i] == target
