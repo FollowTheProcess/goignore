@@ -2,11 +2,10 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"os"
 
 	"github.com/FollowTheProcess/goignore/cli"
-	"github.com/fatih/color"
+	"github.com/FollowTheProcess/msg"
 	"github.com/spf13/afero"
 )
 
@@ -20,9 +19,7 @@ func main() {
 	// Get cwd upfront
 	cwd, err := os.Getwd()
 	if err != nil {
-		title := color.New(color.FgRed).Add(color.Bold)
-		msg := color.New(color.FgWhite).Add(color.Bold)
-		fmt.Fprintf(os.Stderr, "%s: %s\n", title.Sprint("error"), msg.Sprintf("%s", err))
+		msg.Failf("%s", err)
 		os.Exit(1)
 	}
 	// Set up flags
@@ -38,9 +35,7 @@ func main() {
 
 	// Must pass at least 1 argument
 	if flag.NArg() < 1 && !(help || version || list) {
-		title := color.New(color.FgRed).Add(color.Bold)
-		msg := color.New(color.FgWhite).Add(color.Bold)
-		fmt.Fprintf(os.Stderr, "%s: %s\n", title.Sprint("error"), msg.Sprint("must pass at least 1 argument"))
+		msg.Failf("%s", err)
 		os.Exit(1)
 	}
 
@@ -57,9 +52,7 @@ func main() {
 	default:
 		// Run the actual program
 		if err := app.Run(cwd, flag.Args()); err != nil {
-			title := color.New(color.FgRed).Add(color.Bold)
-			msg := color.New(color.FgWhite).Add(color.Bold)
-			fmt.Fprintf(os.Stderr, "%s: %s\n", title.Sprint("error"), msg.Sprint(err))
+			msg.Failf("%s", err)
 			os.Exit(1)
 		}
 	}
