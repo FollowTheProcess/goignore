@@ -5,7 +5,7 @@ go 1.18
 require (
 	github.com/FollowTheProcess/msg v0.3.0
 	github.com/fatih/color v1.13.0
-	github.com/spf13/afero v1.8.2
+	github.com/spf13/afero v1.9.0
 )
 
 require (
