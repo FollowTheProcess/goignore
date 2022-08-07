@@ -1,21 +1,31 @@
 linters:
+  disable-all: true
   enable:
+    - deadcode
+    - errcheck
+    - exhaustive
+    - gocritic
+    - gocyclo
+    - godot
     - gofmt
     - goimports
-    - gocyclo
-    - revive
-    - misspell
-    - gocritic
+    - gosimple
     - govet
-    - godot
+    - ineffassign
+    - misspell
+    - revive
+    - staticcheck
+    - unconvert
+    - unused
+    - varcheck
     - whitespace
 
 linters-settings:
   gocyclo:
-    min-complexity: 15
+    min-complexity: 20
 
   staticcheck:
-    go: "1.18"
+    go: "1.19"
     checks: ["all"]
 
   govet:
