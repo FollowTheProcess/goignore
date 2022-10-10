@@ -53,7 +53,8 @@ type App struct {
 func New(stdout, stderr io.Writer, fs afero.Fs) *App {
 	af := afero.Afero{Fs: fs}
 	printer := msg.Default()
-	printer.Out = stdout
+	printer.Stdout = stdout
+	printer.Stderr = stderr
 	return &App{stdout: stdout, stderr: stderr, fs: af, printer: printer}
 }
 
