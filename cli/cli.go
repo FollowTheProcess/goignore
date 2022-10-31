@@ -45,7 +45,7 @@ type App struct {
 	stdout  io.Writer
 	stderr  io.Writer
 	fs      afero.Afero
-	printer *msg.Printer
+	printer msg.Printer
 }
 
 // New creates and returns a new App configured with an afero file system
