@@ -27,15 +27,16 @@ builds:
 brews:
   - goarm: "6"
     tap:
-      owner: "FollowTheProcess"
+      owner: FollowTheProcess
       name: homebrew-tap
       token: "{{.Env.HOMEBREW_TAP_TOKEN}}"
+    folder: Formula
     commit_author:
-      name: "Tom Fleet"
-      email: "tomfleet2018@gmail.com"
-    homepage: "https://github.com/FollowTheProcess/goignore"
-    description: "Easy gitignores from the command line."
-    license: "MIT License"
+      name: Tom Fleet
+      email: tomfleet2018@gmail.com
+    homepage: https://github.com/FollowTheProcess/goignore
+    description: Easy gitignores from the command line.
+    license: MIT License
     install: |
       bin.install "goignore"
     test: |
