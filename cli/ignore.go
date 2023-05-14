@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"io/fs"
+	"os"
 	"path/filepath"
 )
 
@@ -13,7 +14,7 @@ func (a *App) writeToIgnoreFile(cwd string, data []byte) error {
 
 	if _, err := a.fs.Stat(ignorePath); errors.Is(err, fs.ErrNotExist) {
 		// No .gitignore file currently, good to go
-		err := a.fs.WriteFile(ignorePath, data, 0o755)
+		err := a.fs.WriteFile(ignorePath, data, os.ModePerm)
 		if err != nil {
 			return fmt.Errorf("could not write to %q: %w", ignorePath, err)
 		}
