@@ -19,7 +19,7 @@ func main() {
 	// Get cwd upfront
 	cwd, err := os.Getwd()
 	if err != nil {
-		msg.Failf("%s", err)
+		msg.Error("%s", err)
 		os.Exit(1)
 	}
 	// Set up flags
@@ -35,7 +35,7 @@ func main() {
 
 	// Must pass at least 1 argument
 	if flag.NArg() < 1 && !(help || version || list) {
-		msg.Failf("%s", err)
+		msg.Error("%s", err)
 		os.Exit(1)
 	}
 
@@ -52,7 +52,7 @@ func main() {
 	default:
 		// Run the actual program
 		if err := app.Run(cwd, flag.Args()); err != nil {
-			msg.Failf("%s", err)
+			msg.Error("%s", err)
 			os.Exit(1)
 		}
 	}

@@ -42,20 +42,16 @@ Flags:
 
 // App represents the goignore CLI program.
 type App struct {
-	stdout  io.Writer
-	stderr  io.Writer
-	fs      afero.Afero
-	printer msg.Printer
+	stdout io.Writer
+	stderr io.Writer
+	fs     afero.Afero
 }
 
 // New creates and returns a new App configured with an afero file system
 // and IO streams.
 func New(stdout, stderr io.Writer, fs afero.Fs) *App {
 	af := afero.Afero{Fs: fs}
-	printer := msg.Default()
-	printer.Stdout = stdout
-	printer.Stderr = stderr
-	return &App{stdout: stdout, stderr: stderr, fs: af, printer: printer}
+	return &App{stdout: stdout, stderr: stderr, fs: af}
 }
 
 // Help prints the CLI help text.
@@ -87,7 +83,7 @@ func (a *App) Run(cwd string, args []string) error {
 		}
 	}
 
-	a.printer.Infof("Generating gitignore for %v", strings.Join(args, ", "))
+	msg.Finfo(a.stdout, "Generating gitignore for %v", strings.Join(args, ", "))
 
 	data, err := getIgnoreData(ignoreURL, args)
 	if err != nil {
@@ -98,7 +94,7 @@ func (a *App) Run(cwd string, args []string) error {
 		return err
 	}
 
-	a.printer.Good("Done")
+	msg.Fsuccess(a.stdout, ".gitignore created")
 
 	return nil
 }
