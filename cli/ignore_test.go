@@ -1,4 +1,4 @@
-package cli
+package cli //nolint: testpackage // Need access to internals
 
 import (
 	"bytes"
