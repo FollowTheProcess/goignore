@@ -11,16 +11,13 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
 
     steps:
-      - name: Set up Go
-        uses: actions/setup-go@v4
-        with:
-          go-version: 1.19
-
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Download Dependencies
-        run: go mod download
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version-file: go.mod
 
       - name: Run Tests
         run: go test -race ./...
@@ -30,13 +27,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: 1.19
-
-      - name: Checkout Code
-        uses: actions/checkout@v3
+          go-version-file: go.mod
 
       - name: Run Linting
         uses: golangci/golangci-lint-action@v3
@@ -58,7 +55,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: 1.19
+          go-version-file: go.mod
 
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v4
