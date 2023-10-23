@@ -3,7 +3,7 @@ module github.com/FollowTheProcess/goignore
 go 1.21
 
 require (
-	github.com/FollowTheProcess/msg v0.7.0
+	github.com/FollowTheProcess/msg v1.0.0
 	github.com/fatih/color v1.15.0
 	github.com/spf13/afero v1.10.0
 )
