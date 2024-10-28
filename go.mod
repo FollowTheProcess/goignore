@@ -4,7 +4,7 @@ go 1.23
 
 require (
 	github.com/FollowTheProcess/msg v1.2.0
-	github.com/fatih/color v1.17.0
+	github.com/fatih/color v1.18.0
 	github.com/spf13/afero v1.11.0
 )
 
