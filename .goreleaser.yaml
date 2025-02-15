@@ -1,0 +1,82 @@
+version: 2
+
+project_name: goignore
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - id: goignore
+    dir: "."
+    main: "./cmd/goignore"
+    binary: goignore
+    flags:
+      - -trimpath
+    ldflags:
+      - -s -w
+      - -X github.com/FollowTheProcess/goignore/cli.version={{.Version}}
+      - -X github.com/FollowTheProcess/goignore/cli.commit={{.Commit}}
+      - -X github.com/FollowTheProcess/goignore/cli.date={{.Date}}
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - "386"
+      - amd64
+      - arm64
+    goarm:
+      - "7"
+
+brews:
+  - repository:
+      owner: FollowTheProcess
+      name: homebrew-tap
+      token: "{{.Env.HOMEBREW_TAP_TOKEN}}"
+    goarm: "7"
+    directory: Formula
+    commit_author:
+      name: Tom Fleet
+      email: tomfleet2018@gmail.com
+    homepage: https://github.com/FollowTheProcess/goignore
+    description: Extremely simple Go CLI to hit the gitignore.io API
+    license: MIT License
+    install: |
+      bin.install "goignore"
+    test: |
+      "#{bin}/goignore --version"
+
+archives:
+  - id: goignore
+    name_template: >-
+      {{ .ProjectName }}-
+      {{- .Version }}-
+      {{- .Os }}-
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+
+sboms:
+  - id: goignore
+    artifacts: archive
+    documents:
+      - >-
+        {{ .ProjectName }}-
+        {{- .Version }}-
+        {{- .Os }}-
+        {{- if eq .Arch "amd64" }}x86_64
+        {{- else if eq .Arch "386" }}i386
+        {{- else }}{{ .Arch }}{{ end }}.sbom
+
+checksum:
+  name_template: checksums.txt
+
+snapshot:
+  version_template: "{{ .Tag }}-dev{{ .ShortCommit }}"
+
+changelog:
+  # The changelog is handled by release drafter
+  disable: true

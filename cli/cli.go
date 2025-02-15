@@ -15,6 +15,7 @@ import (
 var (
 	version = "dev" // goignore version, set at compile time with ldflags
 	commit  = ""    // goignore commit hash, set at compile time with ldflags
+	date    = ""    // build date
 )
 
 const (
@@ -63,9 +64,11 @@ func (a *App) Help() {
 func (a *App) Version() {
 	ver := color.CyanString("goignore version")
 	sha := color.CyanString("commit")
+	buildDate := color.CyanString("build date")
 
 	fmt.Fprintf(a.stdout, "%s: %s\n", ver, version)
 	fmt.Fprintf(a.stdout, "%s: %s\n", sha, commit)
+	fmt.Fprintf(a.stdout, "%s: %s\n", buildDate, date)
 }
 
 // List prints the list of valid gitignore targets.

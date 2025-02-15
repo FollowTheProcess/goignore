@@ -45,7 +45,7 @@ func TestIsValidTarget(t *testing.T) {
 }
 
 func BenchmarkIsValidTarget(b *testing.B) {
-	for i := 0; i < b.N; i++ {
+	for range b.N {
 		IsValidTarget("go")
 	}
 }

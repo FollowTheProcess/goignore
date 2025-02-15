@@ -13,7 +13,7 @@ func getIgnoreData(url string, targets []string) ([]byte, error) {
 	targetString := strings.Join(targets, ",")
 	fullURL := strings.Join([]string{url, targetString}, "/")
 
-	resp, err := http.Get(fullURL)
+	resp, err := http.Get(fullURL) //nolint: gosec,noctx // By definition we need to take a variable URL
 	if err != nil {
 		return nil, fmt.Errorf("HTTP error: %w", err)
 	}
