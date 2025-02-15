@@ -1,6 +1,6 @@
 module github.com/FollowTheProcess/goignore
 
-go 1.23
+go 1.24
 
 require (
 	github.com/FollowTheProcess/msg v1.5.0
