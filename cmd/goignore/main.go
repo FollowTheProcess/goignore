@@ -34,7 +34,7 @@ func main() {
 	flag.Parse()
 
 	// Must pass at least 1 argument
-	if flag.NArg() < 1 && !(help || version || list) {
+	if flag.NArg() < 1 && (!help && !version && !list) {
 		msg.Error("%s", err)
 		os.Exit(1)
 	}
