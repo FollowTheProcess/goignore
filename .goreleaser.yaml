@@ -31,23 +31,26 @@ builds:
     goarm:
       - "7"
 
-brews:
-  - repository:
-      owner: FollowTheProcess
-      name: homebrew-tap
-      token: "{{.Env.HOMEBREW_TAP_TOKEN}}"
-    goarm: "7"
-    directory: Formula
+homebrew_casks:
+  - name: goignore
+    binary: goignore
+    directory: Casks
+    description: An extremely simple Go CLI to hit the gitignore.io API
+    homepage: https://github.com/FollowTheProcess/goignore
+    conflicts:
+      - formula: goignore
     commit_author:
       name: Tom Fleet
-      email: tomfleet2018@gmail.com
-    homepage: https://github.com/FollowTheProcess/goignore
-    description: Extremely simple Go CLI to hit the gitignore.io API
-    license: MIT License
-    install: |
-      bin.install "goignore"
-    test: |
-      "#{bin}/goignore --version"
+      email: me@followtheprocess.codes
+    repository:
+      owner: FollowTheProcess
+      name: homebrew-tap
+    hooks:
+      post:
+        install: |
+          if system_command("/usr/bin/xattr", args: ["-h"]).exit_status == 0
+            system_command "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "#{staged_path}/goignore"]
+          end
 
 archives:
   - id: goignore
