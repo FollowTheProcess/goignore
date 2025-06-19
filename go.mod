@@ -3,9 +3,9 @@ module github.com/FollowTheProcess/goignore
 go 1.24
 
 require (
-	github.com/FollowTheProcess/msg v1.9.0
 	github.com/fatih/color v1.18.0
 	github.com/spf13/afero v1.14.0
+	go.followtheprocess.codes/msg v1.9.0
 )
 
 require (

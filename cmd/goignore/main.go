@@ -5,8 +5,8 @@ import (
 	"os"
 
 	"github.com/FollowTheProcess/goignore/cli"
-	"github.com/FollowTheProcess/msg"
 	"github.com/spf13/afero"
+	"go.followtheprocess.codes/msg"
 )
 
 var (

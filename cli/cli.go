@@ -7,9 +7,9 @@ import (
 	"io"
 	"strings"
 
-	"github.com/FollowTheProcess/msg"
 	"github.com/fatih/color"
 	"github.com/spf13/afero"
+	"go.followtheprocess.codes/msg"
 )
 
 var (
