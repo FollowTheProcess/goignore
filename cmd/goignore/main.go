@@ -4,8 +4,8 @@ import (
 	"flag"
 	"os"
 
-	"github.com/FollowTheProcess/goignore/cli"
 	"github.com/spf13/afero"
+	"go.followtheprocess.codes/goignore/cli"
 	"go.followtheprocess.codes/msg"
 )
 

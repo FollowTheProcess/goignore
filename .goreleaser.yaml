@@ -15,9 +15,9 @@ builds:
       - -trimpath
     ldflags:
       - -s -w
-      - -X github.com/FollowTheProcess/goignore/cli.version={{.Version}}
-      - -X github.com/FollowTheProcess/goignore/cli.commit={{.Commit}}
-      - -X github.com/FollowTheProcess/goignore/cli.date={{.Date}}
+      - -X go.followtheprocess.codes/goignore/cli.version={{.Version}}
+      - -X go.followtheprocess.codes/goignore/cli.commit={{.Commit}}
+      - -X go.followtheprocess.codes/goignore/cli.date={{.Date}}
     env:
       - CGO_ENABLED=0
     goos:
