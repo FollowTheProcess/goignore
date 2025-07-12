@@ -9,6 +9,10 @@ An extremely simple go CLI to hit the [gitignore API] with whatever you pass as 
 
 You'll get back a .gitignore file saved to `$CWD/.gitignore` with the contents generated from the API.
 
+> [!WARNING]
+> This project is no longer maintained. If you want an alternative, check out <https://github.com/sondr3/git-ignore>. I now use a simple [nushell](https://www.nushell.sh/) function
+> for this, you can find that [here](https://github.com/FollowTheProcess/dotfiles/blob/6cd651c3eefc94aa5dc1d6aa416086106448f7ae/.config/nushell/commands.nu#L150-L158) if you're interested
+
 ## Installation
 
 ```shell
